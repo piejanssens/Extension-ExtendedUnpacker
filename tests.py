@@ -148,7 +148,7 @@ class Tests(unittest.TestCase):
         set_default_env()
         os.environ["NZBPO_SEVENZIPCMD"] = ""
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.z*'))
+        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.r*'))
 
         [_, code, _] = run_script()
 
@@ -167,7 +167,7 @@ class Tests(unittest.TestCase):
         set_default_env()
         os.environ["NZBPO_UNRARCMD"] = ""
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.r*'))
+        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.z*'))
 
         [_, code, _] = run_script()
 
