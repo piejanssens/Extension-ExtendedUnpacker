@@ -1,30 +1,42 @@
 {
   "main": "main.py",
   "name": "Unzip",
-  "homepage": "https://github.com/nzbgetcom/Extension-Unzip",
+  "homepage": "https://github.com/nzbgetcom/Extension-ExtendedUnpacker",
   "kind": "POST-PROCESSING",
-  "displayName": "Unzip",
+  "displayName": "Extended Unpacker",
   "version": "1.0.0",
   "author": "thorli",
   "license": "GNU",
-  "about": "Unzips nested zip files.",
+  "about": "Unpacks nested zip and rar archives.",
   "queueEvents": "",
   "requirements": [
     "This script requires Python 3.8.0+ to be installed on your system."
   ],
   "description": [
-    "This script extracts nested zip archives from downloaded files."
+    "This script extracts nested zip and rar archives from downloaded files."
   ],
   "options": [
     {
+      "name": "UnrarCmd",
+      "displayName": "UnrarCmd",
+      "value": "unrar e -idp -ai -o-",
+      "description": [
+        "Full path to unrar executable.",
+        "If blank, NZBGet \"UnrarCmd\" setting is used.",
+        "",
+        "Default: unrar e -idp -ai -o-"
+      ],
+      "select": []
+    },
+    {
       "name": "UnzipCmd",
       "displayName": "UnzipCmd",
-      "value": "unzip -n",
+      "value": "7z x -aos",
       "description": [
-        "Full path to unzip executable.",
+        "Full path to zip/7z executable.",
         "If blank, NZBGet \"UnzipCmd\" setting is used.",
         "",
-        "Default: unzip -n"
+        "Default: 7z x -aos"
       ],
       "select": []
     },
@@ -44,7 +56,9 @@
       "name": "DeleteLeftover",
       "displayName": "DeleteLeftover",
       "value": "yes",
-      "description": ["Delete leftover zip files after successful extract."],
+      "description": [
+        "Delete leftover archive files after successful extract."
+      ],
       "select": ["yes", "no"]
     }
   ],

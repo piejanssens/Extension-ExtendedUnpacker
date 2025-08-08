@@ -45,7 +45,7 @@ sys.stdout.flush()
 
 # Check nzbget.conf options
 required_options = (
-    "NZBOP_UNZIPCMD",
+    "NZBPO_UNRARCMD",
     "NZBPO_UNZIPCMD",
     "NZBPO_WAITTIME",
     "NZBPO_DELETELEFTOVER",
@@ -64,12 +64,17 @@ if os.environ["NZBOP_UNPACK"] != "yes":
     sys.exit(POSTPROCESS_ERROR)
 
 unzipcmd = os.environ["NZBPO_UNZIPCMD"]
+unrarcmd = os.environ["NZBPO_UNRARCMD"]
 waittime = os.environ["NZBPO_WAITTIME"]
 deleteleftover = os.environ["NZBPO_DELETELEFTOVER"]
 
 if unzipcmd == "":
     print("[DETAIL] UnzipCmd setting is blank. Using default NZBGet UnzipCmd setting")
     unzipcmd = os.environ["NZBOP_UNZIPCMD"]
+
+if unrarcmd == "":
+    print("[DETAIL] UnrarCmd setting is blank. Using default NZBGet UnrarCmd setting")
+    unrarcmd = os.environ["NZBOP_UNRARCMD"]
 
 # Check TOTALSTATUS
 if os.environ["NZBPP_TOTALSTATUS"] != "SUCCESS":
@@ -95,7 +100,7 @@ if os.environ["NZBOP_UNPACKCLEANUPDISK"] == "yes":
     time.sleep(int(float(waittime)))
 
 # Traverse download files to check for un-extracted zip files
-print("[DETAIL] Searching for zip/RAR files")
+print("[DETAIL] Searching for ZIP/RAR files")
 
 sys.stdout.flush()
 
@@ -103,10 +108,13 @@ sys.stdout.flush()
 def get_full_path(dir, filename):
     return os.path.join(dir, filename)
 
-
-def is_zip(filePath):
+def is_rar(filePath):
     _, fileExtension = os.path.splitext(filePath)
-    return re.match(r"\.zip|\.z\d{2,3}$", fileExtension, re.IGNORECASE) is not None
+    return re.match(r"\.rar|\.r\d{2,3}$", fileExtension, re.IGNORECASE) is not None
+
+def is_archive(filePath):
+    _, fileExtension = os.path.splitext(filePath)
+    return re.match(r"\.zip|\.z\d{2,3}|\.rar|\.r\d{2,3}$", fileExtension, re.IGNORECASE) is not None
 
 
 status = 0
@@ -115,25 +123,29 @@ extracted = []
 working_dir = os.environ["NZBPP_DIRECTORY"]
 
 
-def unzip_recursively():
+def unpack_recursively():
     global extract
     global status
 
-    zips = list()
+    archives = list()
     for dirpath, _, filenames in os.walk(working_dir):
         paths = map(lambda filename: get_full_path(dirpath, filename), filenames)
-        found_files = [file for file in paths if is_zip(file) and file not in extracted]
-        zips.extend(found_files)
+        found_files = [file for file in paths if is_archive(file) and file not in extracted]
+        archives.extend(found_files)
 
-    if len(zips) == 0:
+    if len(archives) == 0:
         extract = 1
         return
 
-    for file in zips:
+    for file in archives:
         print("[INFO] Extracting %s" % file)
         sys.stdout.flush()
 
-        cmd = unzipcmd + ' "' + file + '" "' + working_dir + '"'
+        if is_rar(file):
+            cmd = unrarcmd + ' "' + file + '" "' + working_dir + '"'
+        else:
+            cmd = unzipcmd + ' "' + file + '" "' + working_dir + '"'
+
         try:
             retcode = subprocess.call(cmd, shell=True)
             if retcode == 0 or retcode == 10:
@@ -150,10 +162,10 @@ def unzip_recursively():
             status = 1
             return
 
-    unzip_recursively()
+    unpack_recursively()
 
 
-unzip_recursively()
+unpack_recursively()
 
 sys.stdout.flush()
 
