@@ -33,7 +33,7 @@
       "displayName": "SevenZipCmd",
       "value": "7z e -aos",
       "description": [
-        "Full path to zip/7z executable.",
+        "Full path to 7z executable.",
         "If blank, NZBGet \"SevenZipCmd\" setting is used.",
         "",
         "Default: 7z e -aos"
