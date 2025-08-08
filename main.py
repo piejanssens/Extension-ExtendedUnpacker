@@ -45,8 +45,10 @@ sys.stdout.flush()
 
 # Check nzbget.conf options
 required_options = (
+    "NZBOP_UNRARCMD",
+    "NZBOP_SEVENZIPCMD",
     "NZBPO_UNRARCMD",
-    "NZBPO_UNZIPCMD",
+    "NZBPO_SEVENZIPCMD",
     "NZBPO_WAITTIME",
     "NZBPO_DELETELEFTOVER",
 )
@@ -63,14 +65,14 @@ if os.environ["NZBOP_UNPACK"] != "yes":
     print('[ERROR] You must enable option "Unpack" in NZBGet configuration, exiting')
     sys.exit(POSTPROCESS_ERROR)
 
-unzipcmd = os.environ["NZBPO_UNZIPCMD"]
+sevenzipcmd = os.environ["NZBPO_SEVENZIPCMD"]
 unrarcmd = os.environ["NZBPO_UNRARCMD"]
 waittime = os.environ["NZBPO_WAITTIME"]
 deleteleftover = os.environ["NZBPO_DELETELEFTOVER"]
 
-if unzipcmd == "":
-    print("[DETAIL] UnzipCmd setting is blank. Using default NZBGet UnzipCmd setting")
-    unzipcmd = os.environ["NZBOP_UNZIPCMD"]
+if sevenzipcmd == "":
+    print("[DETAIL] SevenZipCmd setting is blank. Using default NZBGet SevenZipCmd setting")
+    sevenzipcmd = os.environ["NZBOP_SEVENZIPCMD"]
 
 if unrarcmd == "":
     print("[DETAIL] UnrarCmd setting is blank. Using default NZBGet UnrarCmd setting")
@@ -144,7 +146,7 @@ def unpack_recursively():
         if is_rar(file):
             cmd = unrarcmd + ' "' + file + '" "' + working_dir + '"'
         else:
-            cmd = unzipcmd + ' "' + file + '" "' + working_dir + '"'
+            cmd = sevenzipcmd + ' "' + file + '" "' + working_dir + '"'
 
         try:
             retcode = subprocess.call(cmd, shell=True)
@@ -157,7 +159,7 @@ def unpack_recursively():
                 status = 1
                 return
         except OSError as e:
-            print("[ERROR] Execution of unzip command failed: %s" % e)
+            print("[ERROR] Execution of sevenzip command failed: %s" % e)
             print("[ERROR] Unable to extract %s" % file)
             status = 1
             return

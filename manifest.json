@@ -1,6 +1,6 @@
 {
   "main": "main.py",
-  "name": "Unzip",
+  "name": "ExtendedUnpacker",
   "homepage": "https://github.com/nzbgetcom/Extension-ExtendedUnpacker",
   "kind": "POST-PROCESSING",
   "displayName": "Extended Unpacker",
@@ -29,12 +29,12 @@
       "select": []
     },
     {
-      "name": "UnzipCmd",
-      "displayName": "UnzipCmd",
+      "name": "SevenZipCmd",
+      "displayName": "SevenZipCmd",
       "value": "7z x -aos",
       "description": [
         "Full path to zip/7z executable.",
-        "If blank, NZBGet \"UnzipCmd\" setting is used.",
+        "If blank, NZBGet \"SevenZipCmd\" setting is used.",
         "",
         "Default: 7z x -aos"
       ],

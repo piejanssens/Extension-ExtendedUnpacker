@@ -29,8 +29,8 @@ SUCCESS = 93
 NONE = 95
 ERROR = 94
 
-unzip = os.environ.get("7z", "7z")
-unzip_cmd = unzip + " x -aos"
+sevenzip = os.environ.get("7z", "7z")
+sevenzip_cmd = sevenzip + " x -aos"
 
 unrar = os.environ.get("unrar", "unrar")
 unrar_cmd = unrar + " e -idp -ai -o-"
@@ -95,8 +95,8 @@ def set_default_env():
     os.environ["NZBNA_NZBNAME"] = "TestNZB"
     os.environ["NZBPR_FAKEDETECTOR_SORTED"] = "yes"
     os.environ["NZBOP_TEMPDIR"] = tmp_dir
-    os.environ["NZBOP_UNZIPCMD"] = unzip_cmd
-    os.environ["NZBPO_UNZIPCMD"] = unzip_cmd
+    os.environ["NZBOP_UNZIPCMD"] = sevenzip_cmd
+    os.environ["NZBPO_SEVENZIPCMD"] = sevenzip_cmd
     os.environ["NZBOP_UNRARCMD"] = unrar_cmd
     os.environ["NZBPO_UNRARCMD"] = unrar_cmd
     os.environ["NZBPO_WAITTIME"] = "0"
@@ -106,7 +106,7 @@ def set_default_env():
 
 class Tests(unittest.TestCase):
 
-    def test_unzip(self):
+    def test_sevenzip(self):
         if os.path.exists(tmp_dir):
             shutil.rmtree(tmp_dir)
 
@@ -141,12 +141,12 @@ class Tests(unittest.TestCase):
 
         shutil.rmtree(tmp_dir)
 
-    def test_unzip_with_empty_unzipcmd_option(self):
+    def test_sevenzip_with_empty_sevenzipcmd_option(self):
         if os.path.exists(tmp_dir):
             shutil.rmtree(tmp_dir)
 
         set_default_env()
-        os.environ["NZBPO_UNZIPCMD"] = ""
+        os.environ["NZBPO_SEVENZIPCMD"] = ""
 
         shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True)
 
