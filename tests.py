@@ -95,7 +95,7 @@ def set_default_env():
     os.environ["NZBNA_NZBNAME"] = "TestNZB"
     os.environ["NZBPR_FAKEDETECTOR_SORTED"] = "yes"
     os.environ["NZBOP_TEMPDIR"] = tmp_dir
-    os.environ["NZBOP_UNZIPCMD"] = sevenzip_cmd
+    os.environ["NZBOP_SEVENZIPCMD"] = sevenzip_cmd
     os.environ["NZBPO_SEVENZIPCMD"] = sevenzip_cmd
     os.environ["NZBOP_UNRARCMD"] = unrar_cmd
     os.environ["NZBPO_UNRARCMD"] = unrar_cmd
