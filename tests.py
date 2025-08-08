@@ -26,11 +26,11 @@ import json
 
 
 SUCCESS = 93
-NONE = 95
 ERROR = 94
+NONE = 95
 
 sevenzip = os.environ.get("7z", "7z")
-sevenzip_cmd = sevenzip + " x -aos"
+sevenzip_cmd = sevenzip + " e -aos"
 
 unrar = os.environ.get("unrar", "unrar")
 unrar_cmd = unrar + " e -idp -ai -o-"

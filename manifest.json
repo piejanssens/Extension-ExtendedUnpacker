@@ -31,12 +31,12 @@
     {
       "name": "SevenZipCmd",
       "displayName": "SevenZipCmd",
-      "value": "7z x -aos",
+      "value": "7z e -aos",
       "description": [
         "Full path to zip/7z executable.",
         "If blank, NZBGet \"SevenZipCmd\" setting is used.",
         "",
-        "Default: 7z x -aos"
+        "Default: 7z e -aos"
       ],
       "select": []
     },

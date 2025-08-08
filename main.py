@@ -146,7 +146,7 @@ def unpack_recursively():
         if is_rar(file):
             cmd = unrarcmd + ' "' + file + '" "' + working_dir + '"'
         else:
-            cmd = sevenzipcmd + ' "' + file + '" "' + working_dir + '"'
+            cmd = sevenzipcmd + ' "' + file + '" -o"' + working_dir + '"'
 
         try:
             retcode = subprocess.call(cmd, shell=True)
@@ -181,6 +181,8 @@ if extract == 1 and deleteleftover == "yes":
             print("[ERROR] Delete failed: %s" % e)
             print("[ERROR] Unable to delete %s" % file)
             status = 1
+
+
 
 if status == 0:
     sys.exit(POSTPROCESS_SUCCESS)
