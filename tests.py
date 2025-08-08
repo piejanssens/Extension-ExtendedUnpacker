@@ -29,17 +29,17 @@ SUCCESS = 93
 NONE = 95
 ERROR = 94
 
-unrar = os.environ.get("unrar", "unrar")
-unrar_cmd = unrar + " e -idp -ai -o-"
+unzip = os.environ.get("unzip", "unzip")
+unzip_cmd = unzip + " -n"
 
 root = dirname(__file__)
 
 test_data_dir = root + "/test_data"
 tmp_dir = root + "/tmp"
-test_rars = ["test1.rar", "test2.rar", "test3.rar"]
+test_zips = ["test1.zip", "test2.zip", "test3.zip"]
 result_files = [tmp_dir + "/test1.txt", tmp_dir + "/test2.txt", tmp_dir + "/test3.txt"]
-test_partitioned_rars = ["test4.r01", "test4.r02", "test4.r03"]
-test_rars = ["test1.rar", "test2.rar", "test3.rar"]
+test_partitioned_zips = ["test4.r01", "test4.r02", "test4.r03"]
+test_zips = ["test1.zip", "test2.zip", "test3.zip"]
 test_partitioned_result_files = ["test4.bin"]
 test_partitioned_result_files = [tmp_dir + "/test4.bin"]
 
@@ -90,8 +90,8 @@ def set_default_env():
     os.environ["NZBNA_NZBNAME"] = "TestNZB"
     os.environ["NZBPR_FAKEDETECTOR_SORTED"] = "yes"
     os.environ["NZBOP_TEMPDIR"] = tmp_dir
-    os.environ["NZBOP_UNRARCMD"] = unrar_cmd
-    os.environ["NZBPO_UNRARCMD"] = unrar_cmd
+    os.environ["NZBOP_UNZIPCMD"] = unzip_cmd
+    os.environ["NZBPO_UNZIPCMD"] = unzip_cmd
     os.environ["NZBPO_WAITTIME"] = "0"
     os.environ["NZBPO_DELETELEFTOVER"] = "no"
     os.environ["NZBOP_UNPACKCLEANUPDISK"] = "no"
@@ -99,7 +99,7 @@ def set_default_env():
 
 class Tests(unittest.TestCase):
 
-    def test_unrar(self):
+    def test_unzip(self):
         if os.path.exists(tmp_dir):
             shutil.rmtree(tmp_dir)
 
@@ -116,12 +116,12 @@ class Tests(unittest.TestCase):
 
         shutil.rmtree(tmp_dir)
 
-    def test_unrar_with_empty_unrarcmd_option(self):
+    def test_unzip_with_empty_unzipcmd_option(self):
         if os.path.exists(tmp_dir):
             shutil.rmtree(tmp_dir)
 
         set_default_env()
-        os.environ["NZBPO_UNRARCMD"] = ""
+        os.environ["NZBPO_UNZIPCMD"] = ""
 
         shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True)
 
@@ -141,9 +141,9 @@ class Tests(unittest.TestCase):
         os.mkdir(tmp_dir)
         set_default_env()
 
-        for index, rar in enumerate(test_rars):
+        for index, zip in enumerate(test_zips):
             os.mkdir(str(f"{tmp_dir}/{index}"))
-            shutil.copyfile(f"{test_data_dir}/{rar}", f"{tmp_dir}/{index}/{rar}")
+            shutil.copyfile(f"{test_data_dir}/{zip}", f"{tmp_dir}/{index}/{zip}")
 
         [_, code, _] = run_script()
 
@@ -162,14 +162,14 @@ class Tests(unittest.TestCase):
         set_default_env()
         os.environ["NZBPO_DELETELEFTOVER"] = "yes"
 
-        for rar in test_partitioned_rars:
-            shutil.copyfile(f"{test_data_dir}/{rar}", f"{tmp_dir}/{rar}")
+        for zip in test_partitioned_zips:
+            shutil.copyfile(f"{test_data_dir}/{zip}", f"{tmp_dir}/{zip}")
 
         [_, code, _] = run_script()
 
         self.assertEqual(code, SUCCESS)
 
-        for file in test_partitioned_rars:
+        for file in test_partitioned_zips:
             self.assertFalse(os.path.exists(file))
 
         for file in test_partitioned_result_files:

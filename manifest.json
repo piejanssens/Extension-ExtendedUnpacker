@@ -1,55 +1,53 @@
 {
-    "main": "main.py",
-    "name": "ExtendedUnrar",
-    "homepage": "https://github.com/nzbgetcom/Extension-ExtendedUnrar",
-    "kind": "POST-PROCESSING",
-    "displayName": "Extended Unrar",
-    "version": "2.2",
-    "author": "thorli",
-    "license": "GNU",
-    "about": "Unrars nested rar files.",
-    "queueEvents": "",
-    "requirements": [
-        "This script requires Python 3.8.0+ to be installed on your system."
-    ],
-    "description": [
-        "This script extracts nested rar archives from downloaded files."
-    ],
-    "options": [
-        {
-            "name": "UnrarCmd",
-            "displayName": "UnrarCmd",
-            "value": "unrar e -idp -ai -o-",
-            "description": [
-                "Full path to unrar executable.",
-                "If blank, NZBGet \"UnrarCmd\" setting is used.",
-                "",
-                "Default: unrar e -idp -ai -o-"
-            ],
-            "select": []
-        },
-        {
-            "name": "WaitTime",
-            "displayName": "WaitTime",
-            "value": 0,
-            "description": [
-                "Time (in seconds) to pause start of script.",
-                "(Gives NZBGet time to perform \"UnpackCleanupDisk\" action on slow systems).",
-                "",
-                "Default: 0"
-            ],
-            "select": []
-        },
-        {
-            "name": "DeleteLeftover",
-            "displayName": "DeleteLeftover",
-            "value": "yes",
-            "description": [
-                "Delete leftover rar files after successful extract."
-            ],
-            "select": ["yes", "no"]
-        }
-    ],
-    "commands": [],
-    "taskTime": ""
+  "main": "main.py",
+  "name": "Unzip",
+  "homepage": "https://github.com/nzbgetcom/Extension-Unzip",
+  "kind": "POST-PROCESSING",
+  "displayName": "Unzip",
+  "version": "1.0.0",
+  "author": "thorli",
+  "license": "GNU",
+  "about": "Unzips nested zip files.",
+  "queueEvents": "",
+  "requirements": [
+    "This script requires Python 3.8.0+ to be installed on your system."
+  ],
+  "description": [
+    "This script extracts nested zip archives from downloaded files."
+  ],
+  "options": [
+    {
+      "name": "UnzipCmd",
+      "displayName": "UnzipCmd",
+      "value": "unzip -n",
+      "description": [
+        "Full path to unzip executable.",
+        "If blank, NZBGet \"UnzipCmd\" setting is used.",
+        "",
+        "Default: unzip -n"
+      ],
+      "select": []
+    },
+    {
+      "name": "WaitTime",
+      "displayName": "WaitTime",
+      "value": 0,
+      "description": [
+        "Time (in seconds) to pause start of script.",
+        "(Gives NZBGet time to perform \"UnpackCleanupDisk\" action on slow systems).",
+        "",
+        "Default: 0"
+      ],
+      "select": []
+    },
+    {
+      "name": "DeleteLeftover",
+      "displayName": "DeleteLeftover",
+      "value": "yes",
+      "description": ["Delete leftover zip files after successful extract."],
+      "select": ["yes", "no"]
+    }
+  ],
+  "commands": [],
+  "taskTime": ""
 }

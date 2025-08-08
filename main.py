@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# ExtendedUnrar post-processing script for NZBGet
+# Unzip post-processing script for NZBGet
 #
 # Copyright (C) 2014 thorli <thor78@gmx.at>
 # Copyright (C) 2024-2025 Denis <denis@nzbget.com>
@@ -45,8 +45,8 @@ sys.stdout.flush()
 
 # Check nzbget.conf options
 required_options = (
-    "NZBOP_UNRARCMD",
-    "NZBPO_UNRARCMD",
+    "NZBOP_UNZIPCMD",
+    "NZBPO_UNZIPCMD",
     "NZBPO_WAITTIME",
     "NZBPO_DELETELEFTOVER",
 )
@@ -63,13 +63,13 @@ if os.environ["NZBOP_UNPACK"] != "yes":
     print('[ERROR] You must enable option "Unpack" in NZBGet configuration, exiting')
     sys.exit(POSTPROCESS_ERROR)
 
-unrarcmd = os.environ["NZBPO_UNRARCMD"]
+unzipcmd = os.environ["NZBPO_UNZIPCMD"]
 waittime = os.environ["NZBPO_WAITTIME"]
 deleteleftover = os.environ["NZBPO_DELETELEFTOVER"]
 
-if unrarcmd == "":
-    print("[DETAIL] UnrarCmd setting is blank. Using default NZBGet UnrarCmd setting")
-    unrarcmd = os.environ["NZBOP_UNRARCMD"]
+if unzipcmd == "":
+    print("[DETAIL] UnzipCmd setting is blank. Using default NZBGet UnzipCmd setting")
+    unzipcmd = os.environ["NZBOP_UNZIPCMD"]
 
 # Check TOTALSTATUS
 if os.environ["NZBPP_TOTALSTATUS"] != "SUCCESS":
@@ -94,8 +94,8 @@ if os.environ["NZBOP_UNPACKCLEANUPDISK"] == "yes":
     )
     time.sleep(int(float(waittime)))
 
-# Traverse download files to check for un-extracted rar files
-print("[DETAIL] Searching for rar/RAR files")
+# Traverse download files to check for un-extracted zip files
+print("[DETAIL] Searching for zip/RAR files")
 
 sys.stdout.flush()
 
@@ -104,9 +104,9 @@ def get_full_path(dir, filename):
     return os.path.join(dir, filename)
 
 
-def is_rar(filePath):
+def is_zip(filePath):
     _, fileExtension = os.path.splitext(filePath)
-    return re.match(r"\.rar|\.r\d{2,3}$", fileExtension, re.IGNORECASE) is not None
+    return re.match(r"\.zip|\.z\d{2,3}$", fileExtension, re.IGNORECASE) is not None
 
 
 status = 0
@@ -115,25 +115,25 @@ extracted = []
 working_dir = os.environ["NZBPP_DIRECTORY"]
 
 
-def unrar_recursively():
+def unzip_recursively():
     global extract
     global status
 
-    rars = list()
+    zips = list()
     for dirpath, _, filenames in os.walk(working_dir):
         paths = map(lambda filename: get_full_path(dirpath, filename), filenames)
-        found_files = [file for file in paths if is_rar(file) and file not in extracted]
-        rars.extend(found_files)
+        found_files = [file for file in paths if is_zip(file) and file not in extracted]
+        zips.extend(found_files)
 
-    if len(rars) == 0:
+    if len(zips) == 0:
         extract = 1
         return
 
-    for file in rars:
+    for file in zips:
         print("[INFO] Extracting %s" % file)
         sys.stdout.flush()
 
-        cmd = unrarcmd + ' "' + file + '" "' + working_dir + '"'
+        cmd = unzipcmd + ' "' + file + '" "' + working_dir + '"'
         try:
             retcode = subprocess.call(cmd, shell=True)
             if retcode == 0 or retcode == 10:
@@ -145,20 +145,20 @@ def unrar_recursively():
                 status = 1
                 return
         except OSError as e:
-            print("[ERROR] Execution of unrar command failed: %s" % e)
+            print("[ERROR] Execution of unzip command failed: %s" % e)
             print("[ERROR] Unable to extract %s" % file)
             status = 1
             return
 
-    unrar_recursively()
+    unzip_recursively()
 
 
-unrar_recursively()
+unzip_recursively()
 
 sys.stdout.flush()
 
 if extract == 1 and deleteleftover == "yes":
-    print("[INFO] Deleting leftover rar files")
+    print("[INFO] Deleting leftover zip files")
     for file in extracted:
         print("[INFO] Deleting %s" % file)
         try:
