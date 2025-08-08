@@ -112,7 +112,7 @@ class Tests(unittest.TestCase):
 
         set_default_env()
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.r'))
+        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.r*'))
 
         [_, code, _] = run_script()
 
@@ -130,7 +130,7 @@ class Tests(unittest.TestCase):
 
         set_default_env()
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.z'))
+        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.z*'))
 
         [_, code, _] = run_script()
 
@@ -148,7 +148,7 @@ class Tests(unittest.TestCase):
         set_default_env()
         os.environ["NZBPO_SEVENZIPCMD"] = ""
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True)
+        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.z*'))
 
         [_, code, _] = run_script()
 
@@ -167,7 +167,7 @@ class Tests(unittest.TestCase):
         set_default_env()
         os.environ["NZBPO_UNRARCMD"] = ""
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True)
+        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.r*'))
 
         [_, code, _] = run_script()
 
@@ -178,7 +178,7 @@ class Tests(unittest.TestCase):
 
         shutil.rmtree(tmp_dir)
 
-    def test_multiple_folders(self):
+    def test_multiple_folders_zips(self):
         if os.path.exists(tmp_dir):
             shutil.rmtree(tmp_dir)
 
@@ -188,6 +188,26 @@ class Tests(unittest.TestCase):
         for index, zip in enumerate(test_zips):
             os.mkdir(str(f"{tmp_dir}/{index}"))
             shutil.copyfile(f"{test_data_dir}/{zip}", f"{tmp_dir}/{index}/{zip}")
+
+        [_, code, _] = run_script()
+
+        self.assertEqual(code, SUCCESS)
+
+        for file in result_files:
+            self.assertTrue(os.path.exists(file))
+
+        shutil.rmtree(tmp_dir)
+
+    def test_multiple_folders_rars(self):
+        if os.path.exists(tmp_dir):
+            shutil.rmtree(tmp_dir)
+
+        os.mkdir(tmp_dir)
+        set_default_env()
+
+        for index, rar in enumerate(test_rars):
+            os.mkdir(str(f"{tmp_dir}/{index}"))
+            shutil.copyfile(f"{test_data_dir}/{rar}", f"{tmp_dir}/{index}/{rar}")
 
         [_, code, _] = run_script()
 
