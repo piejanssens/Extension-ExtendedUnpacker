@@ -23,7 +23,7 @@
       "description": [
         "Full path to unrar executable.",
         "If blank, NZBGet \"UnrarCmd\" setting is used.",
-        "",
+        "Ensure Unrar is in your system’s PATH (e.g., 'unrar' on POSIX or 'unrar.exe' on Windows). Otherwise, specify the full path to the Unrar executable.",
         "Default: unrar e -idp -ai -o-"
       ],
       "select": []
@@ -35,7 +35,7 @@
       "description": [
         "Full path to 7z executable.",
         "If blank, NZBGet \"SevenZipCmd\" setting is used.",
-        "",
+        "Ensure 7-Zip is in your system’s PATH (e.g., '7z' on POSIX or '7z.exe' on Windows). Otherwise, specify the full path to the 7-Zip executable.",
         "Default: 7z e -aos"
       ],
       "select": []
