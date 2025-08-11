@@ -5,7 +5,7 @@
   "kind": "POST-PROCESSING",
   "displayName": "Extended Unpacker",
   "version": "1.0",
-  "author": "thorli",
+  "author": "piejanssens,thorli",
   "license": "GNU",
   "about": "Unpacks nested zip and rar archives.",
   "queueEvents": "",
