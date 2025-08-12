@@ -112,7 +112,12 @@ class Tests(unittest.TestCase):
 
         set_default_env()
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.r*'))
+        shutil.copytree(
+            test_data_dir,
+            tmp_dir,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns("*.r*"),
+        )
 
         [_, code, _] = run_script()
 
@@ -123,14 +128,18 @@ class Tests(unittest.TestCase):
 
         shutil.rmtree(tmp_dir)
 
-
     def test_unrar(self):
         if os.path.exists(tmp_dir):
             shutil.rmtree(tmp_dir)
 
         set_default_env()
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.z*'))
+        shutil.copytree(
+            test_data_dir,
+            tmp_dir,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns("*.z*"),
+        )
 
         [_, code, _] = run_script()
 
@@ -148,7 +157,12 @@ class Tests(unittest.TestCase):
         set_default_env()
         os.environ["NZBPO_SEVENZIPCMD"] = ""
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.r*'))
+        shutil.copytree(
+            test_data_dir,
+            tmp_dir,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns("*.r*"),
+        )
 
         [_, code, _] = run_script()
 
@@ -159,7 +173,6 @@ class Tests(unittest.TestCase):
 
         shutil.rmtree(tmp_dir)
 
-
     def test_unrar_with_empty_unrarcmd_option(self):
         if os.path.exists(tmp_dir):
             shutil.rmtree(tmp_dir)
@@ -167,7 +180,12 @@ class Tests(unittest.TestCase):
         set_default_env()
         os.environ["NZBPO_UNRARCMD"] = ""
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.z*'))
+        shutil.copytree(
+            test_data_dir,
+            tmp_dir,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns("*.z*"),
+        )
 
         [_, code, _] = run_script()
 
