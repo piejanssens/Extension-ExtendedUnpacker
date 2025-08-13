@@ -29,11 +29,12 @@ SUCCESS = 93
 ERROR = 94
 NONE = 95
 
+
 sevenzip = os.environ.get("7z", "7z")
-sevenzip_cmd = sevenzip + " e -aos"
+sevenzip_args = "e -aos"
 
 unrar = os.environ.get("unrar", "unrar")
-unrar_cmd = unrar + " e -idp -ai -o-"
+unrar_args = "e -idp -ai -o-"
 
 root = dirname(__file__)
 
@@ -95,10 +96,12 @@ def set_default_env():
     os.environ["NZBNA_NZBNAME"] = "TestNZB"
     os.environ["NZBPR_FAKEDETECTOR_SORTED"] = "yes"
     os.environ["NZBOP_TEMPDIR"] = tmp_dir
-    os.environ["NZBOP_SEVENZIPCMD"] = sevenzip_cmd
-    os.environ["NZBPO_SEVENZIPCMD"] = sevenzip_cmd
-    os.environ["NZBOP_UNRARCMD"] = unrar_cmd
-    os.environ["NZBPO_UNRARCMD"] = unrar_cmd
+    os.environ["NZBOP_SEVENZIPCMD"] = sevenzip
+    os.environ["NZBPO_SEVENZIPCMD"] = sevenzip
+    os.environ["NZBPO_SEVENZIPARGS"] = sevenzip_args
+    os.environ["NZBOP_UNRARCMD"] = unrar
+    os.environ["NZBPO_UNRARCMD"] = unrar
+    os.environ["NZBPO_UNRARARGS"] = unrar_args
     os.environ["NZBPO_WAITTIME"] = "0"
     os.environ["NZBPO_DELETELEFTOVER"] = "no"
     os.environ["NZBOP_UNPACKCLEANUPDISK"] = "no"
@@ -112,7 +115,12 @@ class Tests(unittest.TestCase):
 
         set_default_env()
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.r*'))
+        shutil.copytree(
+            test_data_dir,
+            tmp_dir,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns("*.r*"),
+        )
 
         [_, code, _] = run_script()
 
@@ -123,14 +131,18 @@ class Tests(unittest.TestCase):
 
         shutil.rmtree(tmp_dir)
 
-
     def test_unrar(self):
         if os.path.exists(tmp_dir):
             shutil.rmtree(tmp_dir)
 
         set_default_env()
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.z*'))
+        shutil.copytree(
+            test_data_dir,
+            tmp_dir,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns("*.z*"),
+        )
 
         [_, code, _] = run_script()
 
@@ -148,7 +160,12 @@ class Tests(unittest.TestCase):
         set_default_env()
         os.environ["NZBPO_SEVENZIPCMD"] = ""
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.r*'))
+        shutil.copytree(
+            test_data_dir,
+            tmp_dir,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns("*.r*"),
+        )
 
         [_, code, _] = run_script()
 
@@ -159,7 +176,6 @@ class Tests(unittest.TestCase):
 
         shutil.rmtree(tmp_dir)
 
-
     def test_unrar_with_empty_unrarcmd_option(self):
         if os.path.exists(tmp_dir):
             shutil.rmtree(tmp_dir)
@@ -167,7 +183,12 @@ class Tests(unittest.TestCase):
         set_default_env()
         os.environ["NZBPO_UNRARCMD"] = ""
 
-        shutil.copytree(test_data_dir, tmp_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.z*'))
+        shutil.copytree(
+            test_data_dir,
+            tmp_dir,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns("*.z*"),
+        )
 
         [_, code, _] = run_script()
 
