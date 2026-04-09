@@ -125,7 +125,7 @@ def is_rar(filePath):
 def is_archive(filePath):
     _, fileExtension = os.path.splitext(filePath)
     return (
-        re.match(r"\.zip|\.z\d{2,3}|\.rar|\.r\d{2,3}$", fileExtension, re.IGNORECASE)
+        re.match(r"\.zip|\.z\d{2,3}|\.rar|\.r\d{2,3}|\.tar|\.tar\.gz|\.gz$", fileExtension, re.IGNORECASE)
         is not None
     )
 
